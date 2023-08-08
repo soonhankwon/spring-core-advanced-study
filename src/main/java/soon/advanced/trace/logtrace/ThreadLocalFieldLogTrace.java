@@ -19,7 +19,7 @@ public class ThreadLocalFieldLogTrace implements LogTrace {
         ThreadLocal<TraceId> traceId = traceIdHolder;
         Long startTimeMs = System.currentTimeMillis();
 
-        log.info("[{}] {}{}", traceId.get(),
+        log.info("[{}] {}{}", traceId.get().getId(),
                 addSpace(START_PREFIX, traceId.get().getLevel()), message);
         return new TraceStatus(traceId.get(), startTimeMs, message);
     }

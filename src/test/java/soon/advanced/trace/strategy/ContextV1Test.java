@@ -3,6 +3,7 @@ package soon.advanced.trace.strategy;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import soon.advanced.trace.strategy.code.strategy.ContextV1;
+import soon.advanced.trace.strategy.code.strategy.Strategy;
 import soon.advanced.trace.strategy.code.strategy.StrategyLogic1;
 import soon.advanced.trace.strategy.code.strategy.StrategyLogic2;
 
@@ -47,5 +48,56 @@ public class ContextV1Test {
         StrategyLogic2 strategyLogic2 = new StrategyLogic2();
         ContextV1 contextV2 = new ContextV1(strategyLogic2);
         contextV2.execute();
+    }
+
+    @Test
+    void strategyV2() {
+        Strategy strategyLogic1 = new Strategy() {
+            @Override
+            public void call() {
+                log.info("business logic 1");
+            }
+        };
+
+        ContextV1 context1 = new ContextV1(strategyLogic1);
+        context1.execute();
+
+        Strategy strategyLogic2 = new Strategy() {
+            @Override
+            public void call() {
+                log.info("business logic 2");
+            }
+        };
+
+        ContextV1 context2 = new ContextV1(strategyLogic2);
+        context2.execute();
+    }
+
+    @Test
+    void strategyV3() {
+        ContextV1 context1 = new ContextV1(new Strategy() {
+            @Override
+            public void call() {
+                log.info("business logic 1");
+            }
+        });
+        context1.execute();
+
+        ContextV1 context2 = new ContextV1(new Strategy() {
+            @Override
+            public void call() {
+                log.info("business logic 2");
+            }
+        });
+        context2.execute();
+    }
+
+    @Test
+    void strategyV4() {
+        ContextV1 context1 = new ContextV1(() -> log.info("business logic 1"));
+        context1.execute();
+
+        ContextV1 context2 = new ContextV1(() -> log.info("business logic 2"));
+        context2.execute();
     }
 }
